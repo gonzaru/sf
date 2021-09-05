@@ -4,6 +4,7 @@
 package config
 
 import (
+	"errors"
 	"fmt"
 	"log"
 	"os"
@@ -15,7 +16,7 @@ const ProgName = "sf"
 
 var (
 	SFLog    = fmt.Sprintf("%s/%s-sf.log", tmpDir, userName)
-	tmpDir   = getTmpDir()
+	tmpDir   = os.TempDir()
 	userName = getUserName()
 	Term     = "xterm"
 	TermArgs = []string{"-e"}
@@ -50,7 +51,9 @@ func ProgExt(file string) (map[string]interface{}, error) {
 		prgArgs = []string{}
 	default:
 		fi, err := os.Lstat(file)
-		if err != nil {
+		if os.IsNotExist(err) {
+			return prgOpts, errors.New(fmt.Sprintf("progExt: error: '%s' no such file or directory\n", file))
+		} else if err != nil {
 			return prgOpts, err
 		}
 		if !fi.IsDir() && fi.Mode().IsRegular() {
@@ -63,16 +66,6 @@ func ProgExt(file string) (map[string]interface{}, error) {
 	prgOpts["args"] = prgArgs
 	prgOpts["useTerm"] = useTerm
 	return prgOpts, nil
-}
-
-// getTmpDir
-func getTmpDir() string {
-	var defTmpDir = "/tmp"
-	userTmpDir := os.Getenv("TMPDIR")
-	if userTmpDir != "" {
-		defTmpDir = userTmpDir
-	}
-	return defTmpDir
 }
 
 // getUserName

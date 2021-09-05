@@ -40,7 +40,9 @@ func ErrPrintf(format string, v ...interface{}) {
 func FileIndicator(file string) (string, error) {
 	var symbol string
 	fi, err := os.Lstat(file)
-	if err != nil {
+	if os.IsNotExist(err) {
+		return "", errors.New(fmt.Sprintf("fileIndicator: error: '%s' no such file or directory\n", file))
+	} else if err != nil {
 		return "", err
 	}
 	if fi.Mode()&os.ModeSymlink == os.ModeSymlink {
