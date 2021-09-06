@@ -4,7 +4,6 @@
 package utils
 
 import (
-	"errors"
 	"fmt"
 	"log"
 	"os"
@@ -41,7 +40,7 @@ func FileIndicator(file string) (string, error) {
 	var symbol string
 	fi, err := os.Lstat(file)
 	if os.IsNotExist(err) {
-		return "", errors.New(fmt.Sprintf("fileIndicator: error: '%s' no such file or directory\n", file))
+		return "", fmt.Errorf("fileIndicator: error: '%s' no such file or directory\n", file)
 	} else if err != nil {
 		return "", err
 	}
@@ -97,7 +96,7 @@ func KeyPressName(key []byte) (string, error) {
 	var keyName string
 	keySize := 3
 	if len(key) != keySize {
-		return "", errors.New(fmt.Sprintf("keyPressName: error: key needs to be size %d", keySize))
+		return "", fmt.Errorf("keyPressName: error: key needs to be size %d", keySize)
 	}
 	if key[0] != 0 && key[1] == 0 && key[2] == 0 {
 		if key[0] == 27 {

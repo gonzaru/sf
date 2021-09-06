@@ -4,7 +4,6 @@
 package config
 
 import (
-	"errors"
 	"fmt"
 	"log"
 	"os"
@@ -52,7 +51,7 @@ func ProgExt(file string) (map[string]interface{}, error) {
 	default:
 		fi, err := os.Lstat(file)
 		if os.IsNotExist(err) {
-			return prgOpts, errors.New(fmt.Sprintf("progExt: error: '%s' no such file or directory\n", file))
+			return prgOpts, fmt.Errorf("progExt: error: '%s' no such file or directory\n", file)
 		} else if err != nil {
 			return prgOpts, err
 		}

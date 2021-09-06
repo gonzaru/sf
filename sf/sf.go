@@ -338,7 +338,7 @@ func Run() error {
 					}
 					fi, errOs := os.Stat(symlinkPath)
 					if os.IsNotExist(errOs) {
-						return errors.New(fmt.Sprintf("run: error: '%s' no such file or directory\n", symlinkPath))
+						return fmt.Errorf("run: error: '%s' no such file or directory\n", symlinkPath)
 					} else if errOs != nil {
 						return errOs
 					}
@@ -467,7 +467,7 @@ func spawn(file string) error {
 		return errPe
 	}
 	if prgOpts["name"] == "" {
-		return errors.New(fmt.Sprintf("spawn: error: file format '%s' is not supported", ext))
+		return fmt.Errorf("spawn: error: file format '%s' is not supported", ext)
 	}
 	if len(prgOpts["args"].([]string)) > 0 {
 		for _, value := range prgOpts["args"].([]string) {
