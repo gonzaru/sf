@@ -67,7 +67,7 @@ func ProgExt(file string) (map[string]interface{}, error) {
 	return prgOpts, nil
 }
 
-// getUserName
+// getUserName returns the current user
 func getUserName() string {
 	usc, err := user.Current()
 	if err != nil {
